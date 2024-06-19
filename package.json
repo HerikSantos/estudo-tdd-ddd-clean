@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "express": "^4.19.2",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
     "git-commit-msg-linter": "^5.0.8"
   }
 }
