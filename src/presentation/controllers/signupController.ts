@@ -1,19 +1,14 @@
 import { MissingParamError } from "../errors/missing-params-error";
+import { badRequest } from "../helpers/ttp-helper";
 import { type IHttpRequest, type IHttpResponse } from "./protocols/http";
 
 class SignupController {
   handle(httpRequest: IHttpRequest): IHttpResponse {
-    if (!httpRequest.body.name)
-      return {
-        statusCode: 400,
-        body: new MissingParamError("name"),
-      };
+    const { name, email } = httpRequest.body;
 
-    if (!httpRequest.body.email)
-      return {
-        statusCode: 400,
-        body: new MissingParamError("email"),
-      };
+    if (!name) return badRequest(new MissingParamError("email"));
+
+    if (!email) return badRequest(new MissingParamError("email"));
 
     return {
       statusCode: 200,
