@@ -1,8 +1,9 @@
 import { MissingParamError } from "../errors/missing-params-error";
 import { badRequest } from "../helpers/ttp-helper";
+import { type IController } from "./protocols/controller";
 import { type IHttpRequest, type IHttpResponse } from "./protocols/http";
 
-class SignupController {
+class SignupController implements IController {
   handle(httpRequest: IHttpRequest): IHttpResponse {
     const { name, email, password, passwordConfirmation } = httpRequest.body;
 
