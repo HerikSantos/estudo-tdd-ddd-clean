@@ -1,7 +1,7 @@
 import { ServerError } from "../errors/internal-server-error";
 import { InvalidParamError } from "../errors/invalid-params-error";
 import { MissingParamError } from "../errors/missing-params-error";
-import { badRequest } from "../helpers/ttp-helper";
+import { badRequest, serverError } from "../helpers/ttp-helper";
 import { type IController } from "./protocols/controller";
 import { type IEmailValidator } from "./protocols/email-validator";
 import { type IHttpRequest, type IHttpResponse } from "./protocols/http";
@@ -44,10 +44,7 @@ class SignupController implements IController {
         body: "ok",
       };
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new ServerError(),
-      };
+      return serverError(new ServerError());
     }
   }
 }

@@ -9,4 +9,13 @@ const badRequest = (err: Error): IHttpResponse => {
   return retorno;
 };
 
-export { badRequest };
+const serverError = (err: Error): IHttpResponse => {
+  const retorno = {
+    statusCode: 500,
+    body: err,
+  };
+
+  return retorno;
+};
+
+export { badRequest, serverError };
