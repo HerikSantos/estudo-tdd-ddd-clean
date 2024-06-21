@@ -1,3 +1,4 @@
+import { ServerError } from "../errors/internal-server-error";
 import { InvalidParamError } from "../errors/invalid-params-error";
 import { MissingParamError } from "../errors/missing-params-error";
 import { badRequest } from "../helpers/ttp-helper";
@@ -25,22 +26,29 @@ class SignupController implements IController {
       passwordConfirmation: string;
     } = httpRequest.body;
 
-    if (!name) return badRequest(new MissingParamError("name"));
+    try {
+      if (!name) return badRequest(new MissingParamError("name"));
 
-    if (!email) return badRequest(new MissingParamError("email"));
+      if (!email) return badRequest(new MissingParamError("email"));
 
-    if (!password) return badRequest(new MissingParamError("password"));
+      if (!password) return badRequest(new MissingParamError("password"));
 
-    if (!passwordConfirmation)
-      return badRequest(new MissingParamError("passwordConfirmation"));
+      if (!passwordConfirmation)
+        return badRequest(new MissingParamError("passwordConfirmation"));
 
-    if (!this.emailValidator.isValid(email))
-      return badRequest(new InvalidParamError("email"));
+      if (!this.emailValidator.isValid(email))
+        return badRequest(new InvalidParamError("email"));
 
-    return {
-      statusCode: 200,
-      body: "ok",
-    };
+      return {
+        statusCode: 200,
+        body: "ok",
+      };
+    } catch (error) {
+      return {
+        statusCode: 500,
+        body: new ServerError(),
+      };
+    }
   }
 }
 
