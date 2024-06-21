@@ -1,3 +1,4 @@
+import { ServerError } from "../errors/internal-server-error";
 import { InvalidParamError } from "../errors/invalid-params-error";
 import { MissingParamError } from "../errors/missing-params-error";
 import { type IEmailValidator } from "./protocols/email-validator";
@@ -122,8 +123,33 @@ describe("Signup Controller", () => {
 
     const isValidSpy = jest.spyOn(emailValidatorStub, "isValid");
 
-    const httpResponse = sut.handle(httpRequest);
+    sut.handle(httpRequest);
 
     expect(isValidSpy).toHaveBeenCalledWith("teste@gmail.com");
+  });
+
+  it("Should return 500 if EmailValidator throws", () => {
+    class EmailValidatorStub implements IEmailValidator {
+      isValid(email: string): boolean {
+        throw new ServerError();
+      }
+    }
+
+    const emailValidatorStub = new EmailValidatorStub();
+    const sut = new SignupController(emailValidatorStub);
+
+    const httpRequest = {
+      body: {
+        email: "teste@gmail.com",
+        name: "teste da silva",
+        password: "teste123",
+        passwordConfirmation: "teste123",
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
