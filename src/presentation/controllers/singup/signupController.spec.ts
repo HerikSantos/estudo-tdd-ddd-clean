@@ -195,6 +195,47 @@ describe("Signup Controller", () => {
     );
   });
 
+  it("Should return 500 if AddAccountUseCase throws", () => {
+    const { sut, addAccountUseCase } = makeSut();
+
+    jest.spyOn(addAccountUseCase, "add").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = {
+      body: {
+        email: "teste@gmail.com",
+        name: "teste da silva",
+        password: "teste123",
+        passwordConfirmation: "teste123",
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it("Should return 400 if passwordConfirmation is different password", () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: "teste@gmail.com",
+        name: "teste da silva",
+        password: "teste123",
+        passwordConfirmation: "invalid_password",
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(
+      new InvalidParamError("passwordConfirmation"),
+    );
+  });
+
   it("Should sexo", () => {
     const { sut, addAccountUseCase } = makeSut();
     const addSpy = jest.spyOn(addAccountUseCase, "add");
