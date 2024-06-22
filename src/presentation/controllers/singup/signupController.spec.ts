@@ -17,7 +17,7 @@ const makeAddAccountUseCase = (): IAddAcountUseCase => {
       const fakeAccount: IAccountModel = {
         id: "valid_id",
         name: "valid_name",
-        email: "valid_email",
+        email: "valid_email@gmail.com",
         password: "valid_password",
       };
 
@@ -136,6 +136,28 @@ describe("Signup Controller", () => {
     expect(httpResponse.body).toEqual(new InvalidParamError("email"));
   });
 
+  it("Should return 200 if valid data is success", () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: "teste@gmail.com",
+        name: "teste da silva",
+        password: "teste123",
+        passwordConfirmation: "teste123",
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      id: "valid_id",
+      name: "valid_name",
+      email: "valid_email@gmail.com",
+      password: "valid_password",
+    });
+  });
+
   it("Should call Email Validator with correct email", () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = {
@@ -236,7 +258,7 @@ describe("Signup Controller", () => {
     );
   });
 
-  it("Should sexo", () => {
+  it("Should call AddAccountUseCase with correct values", () => {
     const { sut, addAccountUseCase } = makeSut();
     const addSpy = jest.spyOn(addAccountUseCase, "add");
     const httpRequest = {
