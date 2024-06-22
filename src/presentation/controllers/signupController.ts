@@ -1,3 +1,4 @@
+import { type IAddAcountUseCase } from "../../domain/useCases/add-accountUseCase";
 import { ServerError } from "../errors/internal-server-error";
 import { InvalidParamError } from "../errors/invalid-params-error";
 import { MissingParamError } from "../errors/missing-params-error";
@@ -8,9 +9,14 @@ import { type IHttpRequest, type IHttpResponse } from "./protocols/http";
 
 class SignupController implements IController {
   private readonly emailValidator: IEmailValidator;
+  private readonly addAccountUseCase: IAddAcountUseCase;
 
-  constructor(emailValidator: IEmailValidator) {
+  constructor(
+    emailValidator: IEmailValidator,
+    addAccountUseCase: IAddAcountUseCase,
+  ) {
     this.emailValidator = emailValidator;
+    this.addAccountUseCase = addAccountUseCase;
   }
 
   handle(httpRequest: IHttpRequest): IHttpResponse {
@@ -41,6 +47,8 @@ class SignupController implements IController {
 
       if (passwordConfirmation !== password)
         return badRequest(new InvalidParamError("passwordConfirmation"));
+
+      this.addAccountUseCase.add({ name, email, password });
 
       return {
         statusCode: 200,
