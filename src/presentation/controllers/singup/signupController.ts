@@ -1,11 +1,16 @@
-import { type IAddAcountUseCase } from "../../domain/useCases/add-accountUseCase";
-import { ServerError } from "../errors/internal-server-error";
-import { InvalidParamError } from "../errors/invalid-params-error";
-import { MissingParamError } from "../errors/missing-params-error";
-import { badRequest, serverError } from "../helpers/ttp-helper";
-import { type IController } from "./protocols/controller";
-import { type IEmailValidator } from "./protocols/email-validator";
-import { type IHttpRequest, type IHttpResponse } from "./protocols/http";
+import {
+  type IHttpRequest,
+  type IHttpResponse,
+  type IController,
+  type IAddAcountUseCase,
+  type IEmailValidator,
+} from "../../controllers/singup/signup-protocols";
+import {
+  ServerError,
+  InvalidParamError,
+  MissingParamError,
+} from "../../errors";
+import { badRequest, serverError } from "../../helpers/http-helper";
 
 class SignupController implements IController {
   private readonly emailValidator: IEmailValidator;

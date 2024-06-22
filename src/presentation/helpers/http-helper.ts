@@ -1,4 +1,4 @@
-import { type IHttpResponse } from "../controllers/protocols/http";
+import { type IHttpResponse } from "../protocols/http";
 
 const badRequest = (err: Error): IHttpResponse => {
   const retorno = {

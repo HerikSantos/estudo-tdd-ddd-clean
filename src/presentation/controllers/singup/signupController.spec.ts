@@ -2,11 +2,13 @@ import {
   type IAccountModel,
   type IAddAccountModel,
   type IAddAcountUseCase,
-} from "../../domain/useCases/add-accountUseCase";
-import { ServerError } from "../errors/internal-server-error";
-import { InvalidParamError } from "../errors/invalid-params-error";
-import { MissingParamError } from "../errors/missing-params-error";
-import { type IEmailValidator } from "./protocols/email-validator";
+  type IEmailValidator,
+} from "../../../presentation/controllers/singup/signup-protocols";
+import {
+  ServerError,
+  InvalidParamError,
+  MissingParamError,
+} from "../../errors";
 import { SignupController } from "./signupController";
 
 const makeAddAccountUseCase = (): IAddAcountUseCase => {
