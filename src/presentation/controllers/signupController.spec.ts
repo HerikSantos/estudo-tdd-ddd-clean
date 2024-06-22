@@ -150,14 +150,14 @@ describe("Signup Controller", () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  it("Should return 400 if no passwordConfirmation if provider", () => {
+  it("Should return 400 if passwordConfirmation is different password", () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
         email: "teste@gmail.com",
         name: "teste da silva",
         password: "teste123",
-        password_confirmation: "invalid_password",
+        passwordConfirmation: "invalid_password",
       },
     };
 
