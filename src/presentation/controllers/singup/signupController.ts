@@ -53,11 +53,11 @@ class SignupController implements IController {
       if (passwordConfirmation !== password)
         return badRequest(new InvalidParamError("passwordConfirmation"));
 
-      this.addAccountUseCase.add({ name, email, password });
+      const result = this.addAccountUseCase.add({ name, email, password });
 
       return {
         statusCode: 200,
-        body: "ok",
+        body: result,
       };
     } catch (error) {
       return serverError(new ServerError());
