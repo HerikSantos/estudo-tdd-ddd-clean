@@ -39,6 +39,9 @@ class SignupController implements IController {
       if (!this.emailValidator.isValid(email))
         return badRequest(new InvalidParamError("email"));
 
+      if (!passwordConfirmation !== password)
+        return badRequest(new InvalidParamError("passwordConfirmation"));
+
       return {
         statusCode: 200,
         body: "ok",
