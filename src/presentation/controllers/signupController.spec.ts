@@ -1,12 +1,35 @@
+import {
+  type IAccountModel,
+  type IAddAccountModel,
+  type IAddAcountUseCase,
+} from "../../domain/useCases/add-accountUseCase";
 import { ServerError } from "../errors/internal-server-error";
 import { InvalidParamError } from "../errors/invalid-params-error";
 import { MissingParamError } from "../errors/missing-params-error";
 import { type IEmailValidator } from "./protocols/email-validator";
 import { SignupController } from "./signupController";
 
+const makeAddAccountUseCase = (): IAddAcountUseCase => {
+  class AddAccountStub implements IAddAcountUseCase {
+    add(account: IAddAccountModel): IAccountModel {
+      const fakeAccount: IAccountModel = {
+        id: "valid_id",
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      };
+
+      return fakeAccount;
+    }
+  }
+
+  return new AddAccountStub();
+};
+
 interface ISutTypes {
   sut: SignupController;
   emailValidatorStub: IEmailValidator;
+  addAccountUseCase: IAddAcountUseCase;
 }
 
 const makeSut = (): ISutTypes => {
@@ -15,12 +38,13 @@ const makeSut = (): ISutTypes => {
       return true;
     }
   }
-
+  const addAccountUseCase = makeAddAccountUseCase();
   const emailValidatorStub = new EmailValidatorStub();
-  const sut = new SignupController(emailValidatorStub);
+  const sut = new SignupController(emailValidatorStub, addAccountUseCase);
   return {
     sut,
     emailValidatorStub,
+    addAccountUseCase,
   };
 };
 
@@ -167,5 +191,26 @@ describe("Signup Controller", () => {
     expect(httpResponse.body).toEqual(
       new InvalidParamError("passwordConfirmation"),
     );
+  });
+
+  it("Should sexo", () => {
+    const { sut, addAccountUseCase } = makeSut();
+    const addSpy = jest.spyOn(addAccountUseCase, "add");
+    const httpRequest = {
+      body: {
+        email: "teste@gmail.com",
+        name: "teste da silva",
+        password: "teste123",
+        passwordConfirmation: "teste123",
+      },
+    };
+
+    sut.handle(httpRequest);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      email: "teste@gmail.com",
+      name: "teste da silva",
+      password: "teste123",
+    });
   });
 });
