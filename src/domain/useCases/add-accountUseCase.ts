@@ -7,7 +7,7 @@ interface IAddAccountModel {
 }
 
 interface IAddAcountUseCase {
-  add: (account: IAddAccountModel) => IAccountModel;
+  add: (account: IAddAccountModel) => Promise<IAccountModel>;
 }
 
 export type { IAccountModel, IAddAccountModel, IAddAcountUseCase };

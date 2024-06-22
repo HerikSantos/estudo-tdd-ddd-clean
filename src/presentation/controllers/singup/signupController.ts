@@ -24,7 +24,7 @@ class SignupController implements IController {
     this.addAccountUseCase = addAccountUseCase;
   }
 
-  handle(httpRequest: IHttpRequest): IHttpResponse {
+  async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     const {
       name,
       email,
@@ -53,7 +53,11 @@ class SignupController implements IController {
       if (passwordConfirmation !== password)
         return badRequest(new InvalidParamError("passwordConfirmation"));
 
-      const result = this.addAccountUseCase.add({ name, email, password });
+      const result = await this.addAccountUseCase.add({
+        name,
+        email,
+        password,
+      });
 
       return {
         statusCode: 200,
