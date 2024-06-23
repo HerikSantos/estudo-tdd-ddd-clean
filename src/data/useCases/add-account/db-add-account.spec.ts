@@ -43,18 +43,20 @@ describe("DbAccount UseCase", () => {
     expect(cryptSpy).toHaveBeenCalledWith("valid_password");
   });
 
-  it("Should ", async () => {
-    const { sut, encrypterStub } = makeSut();
-    const accountData = {
-      name: "valid_name",
-      email: "valid_email",
-      password: "valid_password",
-    };
+  it("Should throws if Encrypter throws", async () => {
+    await expect(async () => {
+      const { sut, encrypterStub } = makeSut();
+      const accountData = {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      };
 
-    const cryptSpy = jest.spyOn(encrypterStub, "encrypt");
+      jest.spyOn(encrypterStub, "encrypt").mockImplementationOnce(() => {
+        throw new Error();
+      });
 
-    await sut.add(accountData);
-
-    expect(cryptSpy).toHaveBeenCalledWith("valid_password");
+      await sut.add(accountData);
+    }).rejects.toThrow();
   });
 });
