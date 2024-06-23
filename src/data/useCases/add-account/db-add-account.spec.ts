@@ -54,37 +54,37 @@ const makeSut = (): ISutTypes => {
 };
 
 describe("DbAccount UseCase", () => {
-  // it("Should call encrypter with correct password", async () => {
-  //   const { sut, encrypterStub } = makeSut();
-  //   const accountData = {
-  //     name: "valid_name",
-  //     email: "valid_email",
-  //     password: "valid_password",
-  //   };
+  it("Should call encrypter with correct password", async () => {
+    const { sut, encrypterStub } = makeSut();
+    const accountData = {
+      name: "valid_name",
+      email: "valid_email",
+      password: "valid_password",
+    };
 
-  //   const cryptSpy = jest.spyOn(encrypterStub, "encrypt");
+    const cryptSpy = jest.spyOn(encrypterStub, "encrypt");
 
-  //   await sut.add(accountData);
+    await sut.add(accountData);
 
-  //   expect(cryptSpy).toHaveBeenCalledWith("valid_password");
-  // });
+    expect(cryptSpy).toHaveBeenCalledWith("valid_password");
+  });
 
-  // it("Should throws if Encrypter throws", async () => {
-  //   await expect(async () => {
-  //     const { sut, encrypterStub } = makeSut();
-  //     const accountData = {
-  //       name: "valid_name",
-  //       email: "valid_email",
-  //       password: "valid_password",
-  //     };
+  it("Should throws if Encrypter throws", async () => {
+    await expect(async () => {
+      const { sut, encrypterStub } = makeSut();
+      const accountData = {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      };
 
-  //     jest.spyOn(encrypterStub, "encrypt").mockImplementationOnce(() => {
-  //       throw new Error();
-  //     });
+      jest.spyOn(encrypterStub, "encrypt").mockImplementationOnce(() => {
+        throw new Error();
+      });
 
-  //     await sut.add(accountData);
-  //   }).rejects.toThrow();
-  // });
+      await sut.add(accountData);
+    }).rejects.toThrow();
+  });
 
   it("Should call addAccountRepository with correct values", async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
@@ -102,5 +102,22 @@ describe("DbAccount UseCase", () => {
       email: "valid_email",
       password: "hashed_password",
     });
+  });
+
+  it("Should throws if addAccountRepositorty throws", async () => {
+    await expect(async () => {
+      const { sut, addAccountRepositoryStub } = makeSut();
+      const accountData = {
+        name: "valid_name",
+        email: "valid_email",
+        password: "valid_password",
+      };
+
+      jest.spyOn(addAccountRepositoryStub, "add").mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      await sut.add(accountData);
+    }).rejects.toThrow();
   });
 });
