@@ -27,4 +27,15 @@ describe("Example Test Suite", () => {
 
     expect(hashed_password).toBe("hash");
   });
+
+  it("Should if bcrypt throws return throws", async () => {
+    await expect(async () => {
+      const salt = 10;
+      const sut = new BcryptAdapter(salt);
+      jest.spyOn(bcrypt, "hash").mockImplementationOnce(() => {
+        throw new Error();
+      });
+      await sut.encrypt("any_password");
+    }).rejects.toThrow();
+  });
 });
