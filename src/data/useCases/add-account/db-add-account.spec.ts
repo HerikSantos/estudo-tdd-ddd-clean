@@ -6,14 +6,18 @@ interface ISutTypes {
   sut: DbAddAccountUseCase;
 }
 
-const makeSut = (): ISutTypes => {
+const makeEncrypter = (): IEncrypter => {
   class EncrypterStub {
     async encrypt(password: string): Promise<string> {
       return "hashed_password";
     }
   }
 
-  const encrypterStub = new EncrypterStub();
+  return new EncrypterStub();
+};
+
+const makeSut = (): ISutTypes => {
+  const encrypterStub = makeEncrypter();
 
   const sut = new DbAddAccountUseCase(encrypterStub);
 
@@ -25,6 +29,21 @@ const makeSut = (): ISutTypes => {
 
 describe("DbAccount UseCase", () => {
   it("Should call encrypter with correct password", async () => {
+    const { sut, encrypterStub } = makeSut();
+    const accountData = {
+      name: "valid_name",
+      email: "valid_email",
+      password: "valid_password",
+    };
+
+    const cryptSpy = jest.spyOn(encrypterStub, "encrypt");
+
+    await sut.add(accountData);
+
+    expect(cryptSpy).toHaveBeenCalledWith("valid_password");
+  });
+
+  it("Should ", async () => {
     const { sut, encrypterStub } = makeSut();
     const accountData = {
       name: "valid_name",
