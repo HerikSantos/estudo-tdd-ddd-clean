@@ -2,8 +2,8 @@ import {
   type IAccountModel,
   type IAddAccountModel,
   type IAddAcountUseCase,
-} from "../../../domain/useCases/add-accountUseCase";
-import { type IEncrypter } from "../../protocols/encrypter";
+  type IEncrypter,
+} from "./db-add-accounts-protocols";
 class DbAddAccountUseCase implements IAddAcountUseCase {
   private readonly encrypter: IEncrypter;
 

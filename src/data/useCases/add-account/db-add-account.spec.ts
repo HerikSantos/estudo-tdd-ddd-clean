@@ -1,4 +1,4 @@
-import { type IEncrypter } from "../../protocols/encrypter";
+import { type IEncrypter } from "./db-add-accounts-protocols";
 import { DbAddAccountUseCase } from "./db-add-acount";
 
 interface ISutTypes {
