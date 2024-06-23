@@ -1,4 +1,5 @@
 import {
+  type IAddAccountRepository,
   type IAccountModel,
   type IAddAccountModel,
   type IAddAcountUseCase,
@@ -6,24 +7,24 @@ import {
 } from "./db-add-accounts-protocols";
 class DbAddAccountUseCase implements IAddAcountUseCase {
   private readonly encrypter: IEncrypter;
+  private readonly addAccountRepository: IAddAccountRepository;
 
-  constructor(encrypter: IEncrypter) {
+  constructor(
+    encrypter: IEncrypter,
+    addAccountRepository: IAddAccountRepository,
+  ) {
     this.encrypter = encrypter;
+    this.addAccountRepository = addAccountRepository;
   }
 
-  async add(account: IAddAccountModel): Promise<IAccountModel> {
-    const { password } = account;
+  async add(accountData: IAddAccountModel): Promise<IAccountModel> {
+    const hashed_password = await this.encrypter.encrypt(accountData.password);
 
-    const accountModel = {
-      id: "any",
-      name: "any",
-      email: "any",
-      password: "any",
-    };
+    const account = await this.addAccountRepository.add(
+      Object.assign({}, accountData, { password: hashed_password }),
+    );
 
-    await this.encrypter.encrypt(password);
-
-    return accountModel;
+    return account;
   }
 }
 
