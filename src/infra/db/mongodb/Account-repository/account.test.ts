@@ -1,11 +1,14 @@
-import { MongoClient, type Db } from "mongodb";
-
 import { env } from "../../../../enviroment";
+import { AccountMongoRepository } from "./account";
 import { mongoHelper } from "./helpers/mong-helper";
 
 describe("Account Mongo Repository", () => {
   beforeAll(async () => {
-    await mongoHelper.connect(env.MONGO_URL);
+    try {
+      await mongoHelper.connect(env.MONGO_URL);
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   afterAll(async () => {
@@ -21,7 +24,7 @@ describe("Account Mongo Repository", () => {
     });
 
     expect(account).toBeTruthy();
-    expect(account.id).toBeTruthy();
+    expect(account._id).toBeTruthy();
     expect(account.name).toBe("teste_name");
     expect(account.email).toBe("teste@gmail.com");
     expect(account.password).toBe("teste123");
