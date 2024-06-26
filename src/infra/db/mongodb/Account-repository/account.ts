@@ -25,9 +25,7 @@ class AccountMongoRepository implements IAddAccountRepository {
 
     if (!result) throw new Error("User not found");
 
-    const { _id, ...accountWithoutId } = result;
-
-    return Object.assign({}, accountWithoutId, { id: _id });
+    return mongoHelper.map(result);
   }
 }
 export { AccountMongoRepository };

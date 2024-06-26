@@ -33,4 +33,10 @@ export const mongoHelper = {
 
     return this.client.db().collection(name);
   },
+  // eslint-disable-next-line
+  map: (document: any): any => {
+    const { _id, ...documentWithoutId } = document;
+
+    return Object.assign({}, documentWithoutId, { id: _id });
+  },
 };
