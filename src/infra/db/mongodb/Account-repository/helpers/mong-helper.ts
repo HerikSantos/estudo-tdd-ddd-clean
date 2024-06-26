@@ -1,4 +1,4 @@
-import { MongoClient, type Db } from "mongodb";
+import { type Collection, MongoClient, type Db } from "mongodb";
 
 export const mongoHelper = {
   client: null as MongoClient | null,
@@ -24,12 +24,13 @@ export const mongoHelper = {
     }
   },
 
-  getDb(): Db | null {
-    if (!this.db) {
+  getDbCollection(name: string): Collection | null {
+    if (!this.client) {
       throw new Error(
         "No database connection. Did you forget to call connect?",
       );
     }
-    return this.db;
+
+    return this.client.db().collection(name);
   },
 };
