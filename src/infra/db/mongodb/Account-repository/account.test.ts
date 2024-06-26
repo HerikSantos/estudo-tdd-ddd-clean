@@ -24,7 +24,7 @@ describe("Account Mongo Repository", () => {
     });
 
     expect(account).toBeTruthy();
-    expect(account._id).toBeTruthy();
+    expect(account.id).toBeTruthy();
     expect(account.name).toBe("teste_name");
     expect(account.email).toBe("teste@gmail.com");
     expect(account.password).toBe("teste123");
