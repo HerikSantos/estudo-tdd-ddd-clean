@@ -23,8 +23,6 @@ class AccountMongoRepository implements IAddAccountRepository {
       _id: insertedId,
     });
 
-    if (!result) throw new Error("User not found");
-
     return mongoHelper.map(result);
   }
 }

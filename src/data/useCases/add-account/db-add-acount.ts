@@ -24,8 +24,6 @@ class DbAddAccountUseCase implements IAddAcountUseCase {
       Object.assign({}, accountData, { password: hashed_password }),
     );
 
-    console.log(account);
-
     return account;
   }
 }
