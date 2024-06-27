@@ -1,5 +1,5 @@
 import { app } from "./config/app";
 
-app.listen(() => {
+app.listen(3333, () => {
   console.log("Server running http://localhost:3333");
 });
