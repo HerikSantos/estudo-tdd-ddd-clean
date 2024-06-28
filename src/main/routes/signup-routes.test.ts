@@ -33,6 +33,6 @@ describe("Signup Routes", () => {
         password: "123",
         passwordConfirmation: "123",
       })
-      .expect({ message: "Ok" });
+      .expect(200);
   });
 });
