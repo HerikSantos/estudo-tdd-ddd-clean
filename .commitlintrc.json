@@ -1,9 +1,0 @@
-{
-    "types": ["feat", "fix", "docs", "style", "refactor", "chore"],
-    "messages": {
-      "type": "#? [type]: #?[short description]",
-      "subject": "#? #[emoji] #?[subject]",
-      "body": "#? #?[longer description]"
-    }
-  }
-  
