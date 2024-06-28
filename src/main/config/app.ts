@@ -5,5 +5,5 @@ import { route } from "./routes";
 
 export const app = express();
 
-route(app);
 middlewares(app);
+route(app);

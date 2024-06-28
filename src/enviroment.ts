@@ -8,7 +8,7 @@ const envSchema = z.object({
   // AWS_SECRET_ACCESS_KEY: string(),
   // AWS_REGION: string(),
   MONGO_URL: string(),
-  // JWT_SECRET: string(),
+  ENV_PORT: string(),
 });
 
 const env = envSchema.parse(process.env);
